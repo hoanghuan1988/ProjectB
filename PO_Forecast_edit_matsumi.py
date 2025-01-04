@@ -72,7 +72,7 @@ m12y = next_m12.strftime("%Y.%m")
 
 dk = pd.read_csv('PO_Forecast.csv')
 df = dk[dk['GROUP_NAME'].notna()]
-ListA = ['No.','CUSTOMER_GROUP','CusName','Model,''PartNo','Parname','GROUP_NAME','Surface','BeatName','DIAMETER1','DIAMETER2','THICKNESS','LENGTH','OperName']
+ListA = ['CUSTOMER_GROUP', 'CusName', 'Model', 'PartNo', 'PartName','GROUP_NAME', 'Surface', 'BeatName', 'DIAMETER1', 'DIAMETER2','THICKNESS', 'LENGTH', 'OperName']
 
 #ListA1 = ListA .extend([m0,m0x])
 ListA0 = ListA +[m0]+[m0x]
@@ -169,5 +169,5 @@ rename11['Month']=m11y
 rename12['Month']=m12y
 result = pd.concat([rename0,rename1,rename2,rename3,rename4,rename5,rename6,rename7,rename8,rename9,rename10,rename11])
 
-result.to_csv('result.csv')
-print(df0)
+result.to_excel('result.xlsx')
+
