@@ -168,6 +168,6 @@ rename10['Month']=m10y
 rename11['Month']=m11y
 rename12['Month']=m12y
 result = pd.concat([rename0,rename1,rename2,rename3,rename4,rename5,rename6,rename7,rename8,rename9,rename10,rename11])
-
+result = result.reset_index(drop=True)
 result.to_excel('result.xlsx')
 
