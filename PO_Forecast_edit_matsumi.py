@@ -171,3 +171,43 @@ result = pd.concat([rename0,rename1,rename2,rename3,rename4,rename5,rename6,rena
 result = result.reset_index(drop=True)
 result.to_excel('result.xlsx')
 
+edit1=pd.read_excel('PO_Forecast.xlsx')
+edit1.loc[edit1['GROUP_NAME']=='SUS409L','Surface'] = "S"
+edit1.loc[edit1['CUSTOMER_GROUP']=='HONDA','NAME'] = "H"
+edit1.loc[edit1['CUSTOMER_GROUP']=='HONDA USA','NAME'] = "Y"
+edit1.loc[edit1['CUSTOMER_GROUP']=='OTHER','NAME'] = "O"
+edit1.loc[edit1['CUSTOMER_GROUP']=='SUZUKI','NAME'] = "Y"
+edit1.loc[edit1['CUSTOMER_GROUP']=='TTVN','NAME'] = "O"
+edit1.loc[edit1['CUSTOMER_GROUP']=='VINFAST','NAME'] = "O"
+edit1.loc[edit1['CUSTOMER_GROUP']=='YAMAHA','NAME'] = "Y"
+edit1.loc[(edit1['DIAMETER1']==15)&(edit1['DIAMETER2']>0),'Surface'] = "SHVN"
+edit1.loc[(edit1['DIAMETER1']==23)&(edit1['DIAMETER2']>0),'Surface'] = "SHVN"
+edit1.loc[(edit1['DIAMETER1']==28)&(edit1['DIAMETER2']>0),'Surface'] = "SHVN"
+edit1.loc[(edit1['DIAMETER1']==46)&(edit1['DIAMETER2']>0),'Surface'] = "SHVN"
+
+#edit1.to_csv('test.csv')
+
+e = "PO_Forecast.xlsx"
+
+workbook = load_workbook(e)
+
+sheet_to_delete = "Sheet2"
+
+# Check if the sheet exists before deleting
+if sheet_to_delete in workbook.sheetnames:
+    # Remove the sheet
+    del workbook[sheet_to_delete]
+    print(f"Sheet '{sheet_to_delete}' deleted successfully.")
+else:
+    print(f"Sheet '{sheet_to_delete}' does not exist.")
+
+# Save the modified workbook
+workbook.save(e)
+
+print("Excel file saved after deleting the sheet!")
+
+table = pd.pivot_table(edit1, values='Weight(Kg)', index=['NAME','Surface'],columns=['Month'], aggfunc="sum",fill_value=0,margins=True,margins_name="Total")
+f = "PO_Forecast.xlsx"
+
+with pd.ExcelWriter(f, mode='a', engine='openpyxl') as writer:table.to_excel(writer, sheet_name="Sheet2", index=True)
+
