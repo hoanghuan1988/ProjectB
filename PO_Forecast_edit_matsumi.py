@@ -207,7 +207,7 @@ workbook.save(e)
 #print("Excel file saved after deleting the sheet!")
 
 table = pd.pivot_table(edit1, values='Weight(Kg)', index=['NAME','Surface'],columns=['Month'], aggfunc="sum",fill_value=0,margins=True,margins_name="Total")
-# sap xep bang pivot theo thu tu bat quy tac
+# sap xep bang pivot theo thu tu bat quy tac 09/01/2025-Mr. Matsumi
 NAME_order = ["H", "Y", "O"]  # Custom order for Category
 Surface_order = ["P","C","S","SHVN"]  # Custom order for Sub-Category
 
