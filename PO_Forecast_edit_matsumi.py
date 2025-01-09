@@ -204,10 +204,30 @@ else:
 # Save the modified workbook
 workbook.save(e)
 
-print("Excel file saved after deleting the sheet!")
+#print("Excel file saved after deleting the sheet!")
 
 table = pd.pivot_table(edit1, values='Weight(Kg)', index=['NAME','Surface'],columns=['Month'], aggfunc="sum",fill_value=0,margins=True,margins_name="Total")
-f = "PO_Forecast.xlsx"
+# sap xep bang pivot theo thu tu bat quy tac
+NAME_order = ["H", "Y", "O"]  # Custom order for Category
+Surface_order = ["P","C","S","SHVN"]  # Custom order for Sub-Category
 
-with pd.ExcelWriter(f, mode='a', engine='openpyxl') as writer:table.to_excel(writer, sheet_name="Sheet2", index=True)
+pivot_table_flat = table.reset_index()
+
+# Add custom sorting keys
+pivot_table_flat["G_NAME"] = pivot_table_flat["NAME"].map(
+    {v: i for i, v in enumerate(NAME_order)}
+)
+pivot_table_flat["Sur_NAME"] = pivot_table_flat["Surface"].map(
+    {v: i for i, v in enumerate(Surface_order)}
+)
+
+# Sort by custom order
+sorted_pivot_table = pivot_table_flat.sort_values(
+    by=["G_NAME", "Sur_NAME"]
+).drop(columns=["G_NAME", "Sur_NAME"])  # Clean up sorting keys
+
+# Restore the MultiIndex
+sorted_pivot_table = sorted_pivot_table.set_index(["NAME", "Surface"])
+
+with pd.ExcelWriter(e, mode='a', engine='openpyxl') as writer:sorted_pivot_table.to_excel(writer, sheet_name="Sheet2", index=True)
 
